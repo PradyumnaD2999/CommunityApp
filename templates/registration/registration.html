@@ -1,0 +1,49 @@
+{% load static %}
+{% comment %} {% if messg %}
+	<script>
+		alert('{{ messg }}')
+	</script>
+{% endif %} {% endcomment %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Registration Page{% endblock %}</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+  <main>
+    <div class="sidenav">
+         <div class="login-main-text">
+            <h2>Community Application<br> Registration Page</h2>
+            <p>Register from here to apply for a community.</p>
+         </div>
+      </div>
+      <div class="main">
+         <div class="col-md-4 col-sm-12">
+            <div style = "margin-top: 10%">
+               <form action = "/loginAuth/" method="post" id="form_login">
+				      {% csrf_token %}
+                  <div class="form-group">
+					      <label>First Name:</label>
+					      <input class = "form-control" type="text" name="firstname" required><br>
+                     <label>Middle Name (Optional):</label>
+					      <input class = "form-control" type="text" name="middlename"><br>
+                     <label>Last Name:</label>
+					      <input class = "form-control" type="text" name="lastname" required><br>
+                     <label>Email:</label>
+    				      <input class = "form-control" type="email" name="email" required><br>
+                     <label>Password:</label>
+    				      <input class = "form-control" type="password" name="pass" required><br>
+                  </div>
+                  <button type="submit" class="btn btn-black">Login</button>
+               </form>
+            </div>
+         </div>
+      </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Home Page{% endblock %}</title>
+</head>
+<body>
+  <main>
+    {% block content %}
+  		<div style="text-align:center">Hi Welcome !!</div>
+  		<p><a href="{% url 'logout' %}">logout</a></p>
+    {% endblock %}
+  </main>
+</body>
+</html>

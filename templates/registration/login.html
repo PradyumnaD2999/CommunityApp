@@ -1,0 +1,53 @@
+{% load static %}
+{% if messg %}
+	<script>
+		alert('{{ messg }}')
+	</script>
+{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Login Page{% endblock %}</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+  <main>
+    <div class="sidenav">
+         <div class="login-main-text">
+            <h2>Community Application<br> Login Page</h2>
+            <p>Login or register from here to enter your community.</p>
+         </div>
+         <div class="login-main-text">
+            <span style="padding: 15px">Want To Join A Community?</span>
+            <a href = "/registrationRedirect/" type="button" class="btn btn-secondary">Register</a>
+         </div>
+      </div>
+      <div class="main">
+         <div class="col-md-8 col-sm-12">
+            <div style = "margin-top: 40%">
+               <form action = "/loginAuth/" method="post" id="form_login">
+				      {% csrf_token %}
+                  <div class="form-group">
+					      <label for = "user_type">User Type:</label>
+					      <select class = "form-control" name="usertype" id = "user_type">
+						      <option value = "member">Member</option>
+						      <option value = "admin">Admin</option>
+						      <option value = "superadmin">Super Admin</option>
+					      </select><br>
+                     <label style= "padding-right: 30px">Email:</label>
+    				      <input class = "form-control" type="email" name="email" required><br>
+                     <label>Password:</label>
+    				      <input class = "form-control" type="password" name="pass" required><br>
+                  </div>
+                  <button type="submit" class="btn btn-black">Login</button>
+               </form>
+            </div>
+         </div>
+      </div>
+  </main>
+</body>
+</html>
