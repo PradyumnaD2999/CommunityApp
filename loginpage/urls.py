@@ -7,4 +7,5 @@ urlpatterns = [
     path('', LoginPageView.as_view(), name='home'),
 	url(r'^loginAuth/', views.loginAuth, name='login'),
     url(r'^registrationRedirect/', views.registrationRedirect, name='register'),
+    url(r'^user_registration/', views.user_registration, name='reg_data'),
 ]
