@@ -4,7 +4,12 @@ from django.views.generic import TemplateView
 from firebase_admin import credentials,firestore,db,auth
 import firebase_admin
 import pyrebase
-
+import cv2 
+import os,argparse 
+import pytesseract ,re
+from PIL import Image 
+import csv
+import pandas as pd
 # Create your views here.
 
 class LoginPageView(TemplateView):
@@ -45,10 +50,12 @@ def loginAuth(request):
 	print(user['idToken'])
 	session_id=user['idToken']
 	request.session['uid']=str(session_id)
-	return render(request, "home.html",{"e":email})
+	return render(request, "dashboard.html",{"e":email})
 
 def registrationRedirect(request):
     return render(request, "registration/registration.html")
+
+name = ''
 
 def user_registration(request):
 	email=request.POST.get('email')
@@ -62,6 +69,19 @@ def user_registration(request):
 	idproof=request.POST.get('idproof')
 	lurl=request.POST.get('linkedinurl')
 	pw=request.POST.get('password1')
+
+	name = fname+' '+lname 
+	print(name)
+	colunms = ['username','password','firstname','lastname','email','institution','department']
+
+	path = "/home/neha/Downloads/BEMOODLE.csv"
+	df = pd.read_csv(path, names=colunms)
+	#print(df.head())
+
+	for i in df['lastname']:
+		if i == name:
+			print('found')
+
 
 	if fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
 		msg = "This e-mail is already associated with another account!"
@@ -83,6 +103,27 @@ def user_registration(request):
 		'linkedinUrl':lurl,
 		'password':pw
 	})
+	
+	#Code to check the data from IDproof
+	'''
+	images=cv2.imread(idproof) 
+	gray=cv2.cvtColor(images, cv2.COLOR_BGR2GRAY) 
+	#memory usage with image i.e. adding image to memory 
+	#filename = "{}.jpg".format(os.getpid()) 
+	#cv2.imwrite(filename, gray) 
+	text = pytesseract.image_to_string(gray)
+	f= open("out.txt","w+")
+	f.write(text)
+	f.close()
+	name_list = []
+
+	with open ('out.txt', 'rt') as myfile:
+		for myline in myfile:
+			name_list.append(myline)
+	for item in name_list:
+		if name == item :
+			print('Found on ID proof!')
+'''
 	return render(request, "home.html",{"e":email})
 
 
