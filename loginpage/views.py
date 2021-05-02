@@ -4,12 +4,12 @@ from django.views.generic import TemplateView
 from firebase_admin import credentials,firestore,db,auth
 import firebase_admin
 import pyrebase
-import cv2 
+#import cv2 
 import os,argparse 
-import pytesseract ,re
+#import pytesseract ,re
 from PIL import Image 
 import csv
-import pandas as pd
+#import pandas as pd
 # Create your views here.
 
 class LoginPageView(TemplateView):
@@ -29,7 +29,8 @@ config = {
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
 
-cred = credentials.Certificate('/home/neha/Desktop/BEproject/notifire/wbca-mmcoe2021-firebase-adminsdk-4mnlv-e359f7b1aa.json')
+cwd = os.getcwd()
+cred = credentials.Certificate(os.path.join(cwd, 'wbca-mmcoe2021-firebase-adminsdk-4mnlv-e359f7b1aa.json'))
 firebase_admin.initialize_app(cred, {'databaseURL': "https://wbca-mmcoe2021-default-rtdb.firebaseio.com"})
 fs = firestore.client()
 
