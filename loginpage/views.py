@@ -69,19 +69,20 @@ def user_registration(request):
 	company=request.POST.get('company')
 	idproof=request.POST.get('idproof')
 	lurl=request.POST.get('linkedinurl')
-	pw=request.POST.get('password1')
+	pw1=request.POST.get('password1')
+	pw2=request.POST.get('password2')
 
 	name = fname+' '+lname 
 	print(name)
 	colunms = ['username','password','firstname','lastname','email','institution','department']
 
-	path = "/home/neha/Downloads/BEMOODLE.csv"
-	df = pd.read_csv(path, names=colunms)
+	#path = "/home/neha/Downloads/BEMOODLE.csv"
+	#df = pd.read_csv(path, names=colunms)
 	#print(df.head())
 
-	for i in df['lastname']:
-		if i == name:
-			print('found')
+	# for i in df['lastname']:
+	# 	if i == name:
+	# 		print('found')
 
 
 	if fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
@@ -90,8 +91,18 @@ def user_registration(request):
 	elif fs.collection(u'superadmin').document(u'registration').collection(u'member').document(u'{}'.format(email)).get().exists:
 		msg = "Registered with this e-mail,verification pending."
 		return render(request,"registration/login.html",{"messg":msg})
-	reg=fs.collection(u'superadmin').document(u'registration').collection(u'member')
+
+	#add to superadmin db for profile verification
+	#reg=fs.collection(u'superadmin').document(u'registration').collection(u'member')
+ 
+	authe.create_user_with_email_and_password(email, pw1)
+	reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
 	reg.document(u'{}'.format(email)).set({
+		'password':pw1
+	})
+ 
+	data = fs.collection(u'member').document(u'profiles').collection(u'data')
+	data.document(u'{}'.format(email)).set({
 		'firstName': fname,
 		'middleName':mname,
 		'lastName':lname,
@@ -102,7 +113,6 @@ def user_registration(request):
 		'company':company,
 		'idProof':idproof,
 		'linkedinUrl':lurl,
-		'password':pw
 	})
 	
 	#Code to check the data from IDproof
@@ -125,7 +135,7 @@ def user_registration(request):
 		if name == item :
 			print('Found on ID proof!')
 '''
-	return render(request, "home.html",{"e":email})
+	return render(request, "registration/login.html")
 
 
 
