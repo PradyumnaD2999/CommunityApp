@@ -67,3 +67,6 @@ node_modules/
 
 #firebase credentials.json
 /wbca-mmcoe2021-firebase-adminsdk-4mnlv-e359f7b1aa.json
+
+.github_ssh
+.github_ssh.pub
