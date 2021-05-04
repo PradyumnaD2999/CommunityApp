@@ -27,46 +27,46 @@
             <div style = "margin-top: 10%">
                <form class="form-inline" action = "/user_registration/" method="post" id="form_login">
 				      {% csrf_token %}
-                  <div class="form-group">
-                     <label style="padding-right: 5px">First Name:</label>
-                     <input class = "form-control col-md-2" type="text" name="firstname" style = "margin-right: 3%" required>
+                  <div class="form-group" style="line-height: 70px;">
+                     <label style="padding-right: 50px">First Name:</label>
+                     <input class = "form-control col-md-2" type="text" name="firstname" style = "margin-right: 2.5%" required>
                      <label style="padding-right: 5px">Middle Name (Optional):</label>
-                     <input class = "form-control col-md-2" type="text" name="middlename" style = "margin-right: 3%">
-                     <label style="padding-right: 5px">Last Name:</label>
+                     <input class = "form-control col-md-2" type="text" name="middlename" style = "margin-right: 2.75%">
+                     <label style="padding-right: 79px">Last Name:</label>
                      <input class = "form-control col-md-2" type="text" name="lastname" style = "margin-right: 3%" required>  
                   </div>
-                  <br>
-                  <div class="form-group">
-                     <label style="padding-right: 5px">Email:</label>
-    				      <input class = "form-control" type="email" name="email" style = "margin-right: 3%" required>
-                     <label style="padding-right: 5px">Contact (Mobile):</label>
-                     <input class = "form-control col-md-2" type="tel" pattern="[0-9]{10}" name="contact" style = "margin-right: 3%" required>
+
+                  <div class="form-group" style="line-height: 70px;">
+                     <label style="padding-right: 90px">Email:</label>
+    				      <input class = "form-control col-md-3" type="email" name="email" style = "margin-right: 3.75%" required>
+                     <label style="padding-right: 64px">Contact (Mobile):</label>
+                     <input class = "form-control col-md-3" type="tel" pattern="[0-9]{10}" name="contact" style = "margin-right: 3%" required>
                   </div>
-                  <br>
-                  <div class="form-group">
-                     <label style="padding-right: 5px">Graduation Year:</label>
-                     <input class = "form-control col-md-2" type="month" name="graduation" style = "margin-right: 3%" required>
-                     <label style="padding-right: 5px">Branch (Optional):</label>
-                     <input class = "form-control col-md-2" type="text" name="branch" style = "margin-right: 3%">
+
+                  <div class="form-group" style="line-height: 70px;">
+                     <label style="padding-right: 6px">Graduation Year:</label>
+                     <input class = "form-control col-md-2" type="month" name="graduation" style = "margin-right: 2.5%" required>
+                     <label style="padding-right: 54px">Branch (Optional):</label>
+                     <input class = "form-control col-md-2" type="text" name="branch" style = "margin-right: 2.75%">
                      <label style="padding-right: 5px">Company (Optional):</label>
                      <input class = "form-control col-md-2" type="text" name="company" style = "margin-right: 3%">  
                   </div>
-                  <br>
-                  <div class="form-group">
-                     <label style="padding-right: 5px">Aadhar No.:</label>
-    				      <input class = "form-control" type="text" pattern="[0-9]{12}" name="idproof" style = "margin-right: 3%" required>
-                     <label style="padding-right: 5px">Linked URL (Optional):</label>
-                     <input class = "form-control col-md-2" type="url" name="linkedinurl" style = "margin-right: 3%">
+
+                  <div class="form-group" style="line-height: 70px;">
+                     <label style="padding-right: 45px">Aadhar No.:</label>
+    				      <input class = "form-control col-md-3" type="text" pattern="[0-9]{12}" name="idproof" style = "margin-right: 3.75%" required>
+                     <label style="padding-right: 21px">Linked URL (Optional):</label>
+                     <input class = "form-control col-md-3" type="url" name="linkedinurl" style = "margin-right: 3%">
                   </div>
-                  <br>
-                  <div class="form-group">
-                     <label style="padding-right: 5px">Password:</label>
-    				      <input class = "form-control" type="password" name="password1" style = "margin-right: 3%" required>
-                     <label style="padding-right: 5px">Confirm Password:</label>
-                     <input class = "form-control col-md-2" type="password" name="password2" style = "margin-right: 3%" required>
+
+                  <div class="form-group" style="line-height: 70px;">
+                     <label style="padding-right: 59px">Password:</label>
+    				      <input class = "form-control col-md-3" type="password" name="password1" style = "margin-right: 3.75%" required>
+                     <label style="padding-right: 52px">Confirm Password:</label>
+                     <input class = "form-control col-md-3" type="password" name="password2" style = "margin-right: 3%" required>
                   </div>
-                  <br>
-                  <button type="submit" class="btn btn-black">Register</button>
+
+                  <button type="submit" class="btn btn-black" style = "margin-top: 4%; margin-left: 143%; padding: 5px 35px;">Register</button>
                </form>
             </div>
          </div>
