@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'loginpage',
+    'userprofile'
 	#'firebase_auth',
 	#'phonenumber_field',
 ]

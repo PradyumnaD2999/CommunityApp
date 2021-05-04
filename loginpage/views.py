@@ -73,7 +73,7 @@ def user_registration(request):
 	pw2=request.POST.get('password2')
 
 	name = fname+' '+lname 
-	print(name)
+	#print(name)
 	colunms = ['username','password','firstname','lastname','email','institution','department']
 
 	#path = "/home/neha/Downloads/BEMOODLE.csv"
