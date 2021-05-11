@@ -11,6 +11,9 @@
         <title>Community Dashboard</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -45,8 +48,16 @@
                 </div>
             </div>
         </nav>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        {% block content %}{% endblock content %}
+        
         <!-- Masthead-->
-        <header class="masthead bg-white text-dark text-center">
+        {% comment %} <header class="masthead bg-white text-dark text-center">
             <div class="container d-flex align-items-center flex-column">
                 <!-- Masthead Avatar Image-->
                 
@@ -208,7 +219,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> {% endcomment %}
         <!-- Footer-->
         <footer class="footer text-center">
             <div class="container">

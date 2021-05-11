@@ -1,1 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <form action="/editProfileView/">
+        {% csrf_token %}
+        <div class="form-group" style="line-height: 70px;">
+            <label style="padding-right: 50px">Username:</label>
+            <input class = "form-control col-md-2" type="text" name="username" style = "margin-right: 2.5%" value="{{ firstName }}">
+            <label style="padding-right: 5px">Bio:</label>
+            <input class = "form-control col-md-2" type="text" name="bio" style = "margin-right: 2.75%" value="{{ bio }}">
+            <label style="padding-right: 79px">LinkedIn URL:</label>
+            <input class = "form-control col-md-2" type="text" name="lurl" style = "margin-right: 3%" value="{{ linkedinurl }}">  
+            <label style="padding-right: 79px">Company:</label>
+            <input class = "form-control col-md-2" type="text" name="company" style = "margin-right: 3%" value="{{ company }}">  
+        </div>
+    </form>
+{% endblock content %}extend base html in django block
