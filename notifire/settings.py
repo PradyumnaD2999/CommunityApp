@@ -50,8 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'loginpage',
-	#'firebase_auth',
-	#'phonenumber_field',
+    'userprofile',
+    'groups',
+	
 ]
 
 MIDDLEWARE = [

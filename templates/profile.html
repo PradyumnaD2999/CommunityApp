@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Community Dashboard</title>
+        <title>User Profile</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -17,15 +16,13 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'Dashboardcss/css/styles.css' %}" rel="stylesheet" type="text/css">    </head>
+        <link href="{% static 'Dashboardcss/css/styles.css' %}" rel="stylesheet" type="text/css">    
+    </head>
     <body id="page-top">
-
-        <nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav" style="background-color:#000;">
-        
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top" id="mainNav">
             <div class="container">
-                
-                <!-- <a href=""></a><i class="fas fa-user-circle fa-3x"></i></div></a> -->
-                <a class="navbar-brand js-scroll-trigger" href="{% url 'Dashboard' %}">Community Application</a>
+                <a class="navbar-brand js-scroll-trigger" href="{% url 'Dashboard' %}">Hi {{ firstName }}</a>
                 <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -37,8 +34,8 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="far fa-comments fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="fas fa-search fa-2x"></i></a></li>
                         <!-- <img src="download.png" alt="" class="rounded-circle ml-3 d-none d-md-block" class="float-left" class="img-fluid" width="40px" height="40px"> -->
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href=""><i class="fas fa-user-friends fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'Profile' %}"><i class="fas fa-user-circle fa-2x"></i></a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="fas fa-user-friends fa-2x"></i></a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href=""><i class="fas fa-user-circle fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
 
                     </ul>
@@ -46,27 +43,46 @@
             </div>
         </nav>
         <!-- Masthead-->
+        <!-- <img src="coverimg.jpeg" alt="Nature" class="responsive"> -->
+
         <header class="masthead bg-white text-dark text-center">
-            <div class="container d-flex align-items-center flex-column">
+           
+            <div class="bg-darker bg-position-center" >
+        
+            <!-- <picture> -->
+                <!-- <source srcset="cover.jpeg"> -->
+                <!-- <source srcset="cover.jpeg"> -->
+                <!-- <img src="cover.jpeg" alt="Beatles" style="width:auto;"> -->
+              <!-- </picture> -->
                 <!-- Masthead Avatar Image-->
-                
+                <img class="masthead-avatar mb-5" src="{% static 'Dashboardcss/assets/img.png' %}" width="200" height="250" alt="add profile picture" />
+
                 <!-- Masthead Heading-->
-                
+                <!-- <p>I'm <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer"></span></p> -->
+             
+            </div>
+            <div>
+                <a href = "/editProfile/" type="button" class="btn btn-secondary">Edit Profile</a>            
+            </div>
                 <!-- Icon Divider-->
-                <div class="divider-custom divider-light">
+                <div class="divider-custom divider-dark">
                     <div class="divider-custom-line"></div>
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <!-- Masthead Subheading-->
                 
+                <!-- Masthead Subheading-->
+                <h2 class="masthead-heading mb-0"><h1>{{ firstName }} {{ lastName }}</h1>
+                </h2>
+
+                <p class="masthead-subheading font-weight-light mb-0">Graphic Artist - Web Designer - Illustrator</p>
             </div>
         </header>
         <!-- Portfolio Section-->
-        <section class="page-section portfolio" id="portfolio" style="color:#000;">
+        <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <!-- Portfolio Section Heading-->
-                <h2 class="page-section-heading text-center text-dark text-uppercase text-secondary mb-0" >Portfolio</h2>
+                <h2 class="page-section-heading text-center text-dark text-uppercase text-secondary mb-0">Posts</h2>
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
