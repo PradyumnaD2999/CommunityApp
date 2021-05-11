@@ -6,5 +6,5 @@ from django.views.generic import TemplateView
 
 #class UserProfileView(TemplateView):
 #	template_name = "profile.html"
-def ProfileRedirect(request):
-    return render(request, "profile.html")
+#def ProfileRedirect(request):
+    #return render(request, "profile.html")

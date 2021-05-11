@@ -4,6 +4,11 @@ from django.views.generic import TemplateView
 from firebase_admin import credentials,firestore,db,auth
 import firebase_admin
 import pyrebase
+from django.contrib.auth.decorators import login_required
+from .models import Profile, FriendRequest
+import random
+from django.contrib.auth import get_user_model
+
 #import cv2 
 import os,argparse 
 #import pytesseract ,re
@@ -11,6 +16,9 @@ from PIL import Image
 import csv
 #import pandas as pd
 # Create your views here.
+
+User = get_user_model()
+
 
 class LoginPageView(TemplateView):
 	template_name = 'registration/login.html'
@@ -34,7 +42,11 @@ cred = credentials.Certificate(os.path.join(cwd, 'wbca-mmcoe2021-firebase-admins
 firebase_admin.initialize_app(cred, {'databaseURL': "https://wbca-mmcoe2021-default-rtdb.firebaseio.com"})
 fs = firestore.client()
 
-# Create your views here.
+
+# Create your views here
+
+global res
+res = {}
 def loginAuth(request):
 	email=request.POST.get('email')
 	passw = request.POST.get("pass")
@@ -48,15 +60,30 @@ def loginAuth(request):
 	except:
 		message="invalid credentials"
 		return render(request,"registration/login.html",{"messg":message})
-	print(user['idToken'])
+	
 	session_id=user['idToken']
 	request.session['uid']=str(session_id)
+	idtoken=request.session.get('uid',None)
+	print(idtoken)
+	print(user['idToken'])
+#	auth.get_account_info(user['idToken'])
+
+	currentuser = authe.current_user
+
+	email = currentuser['email']
+	print(currentuser['email'])
+	print(email)
+	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
+	doc = doc_ref.document(email)
+	print(doc)
+	res = doc.get().to_dict()
+	print(res)
+	#user_data = res.copy()
 	return render(request, "dashboard.html",{"e":email})
 
 def registrationRedirect(request):
     return render(request, "registration/registration.html")
 
-name = ''
 
 def user_registration(request):
 	email=request.POST.get('email')
@@ -138,5 +165,32 @@ def user_registration(request):
 	return render(request, "registration/login.html")
 
 
+def ProfileRedirect(request):
+	
+	res = get_user_data()
+	fs = firestore.client()	
+	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
 
-#class Profileview(TemplateView):
+	doc = doc_ref.document(res['email'])
+	
+	result = doc.get().to_dict()
+	print(result['firstName'])
+	
+	print(result)
+	
+	return render(request, "profile.html",result)
+
+
+def get_user_data():
+	currentuser = authe.current_user
+
+	email = currentuser['email']
+	print(currentuser['email'])
+	print(email)
+	return currentuser
+
+def DashboardView(request):
+	#user = auth.get_user(uid)
+	print('dashboard output')
+	return render(request, "dashboard.html")
+

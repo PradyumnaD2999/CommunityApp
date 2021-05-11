@@ -5,6 +5,6 @@ from . import views
 
 urlpatterns = [
     #path('', UserProfileView.as_view(), name='Profile'),
-    url(r'^profile/', views.ProfileRedirect, name='Profile'),
+    #url(r'^profile/', views.ProfileRedirect, name='Profile'),
 
 ]
