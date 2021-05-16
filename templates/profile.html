@@ -9,6 +9,10 @@
         <meta name="author" content="" />
         <title>User Profile</title>
         <!-- Favicon-->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
@@ -17,6 +21,9 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'Dashboardcss/css/styles.css' %}" rel="stylesheet" type="text/css">    
+        <link href="{% static 'Dashboardcss/css/profilepage.css' %}" rel="stylesheet" type="text/css">  
+          
+
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -55,12 +62,29 @@
                 <!-- <img src="cover.jpeg" alt="Beatles" style="width:auto;"> -->
               <!-- </picture> -->
                 <!-- Masthead Avatar Image-->
-                <img class="masthead-avatar mb-5" src="{% static 'Dashboardcss/assets/img.png' %}" width="200" height="250" alt="add profile picture" />
+                <div class="img-wrapper">
+                <img class="masthead-avatar mb-5" src="{% static 'Dashboardcss/assets/img.png' %}" width="200" height="250" alt="add profile picture"/>
+                <div class="img-overlay">
+                    <!-- <a href="/home/neha/Desktop" class="icon"> -->
+                        
+                        <div>
+                    
+                        <a href="" id="upload_link"><i class="far fa-image fa-2x">
 
+                        </i></a>
+                            
+                        </div>
+                    
+                    </div>
+                </div>
+                <input id="upload" type="file"/>
+                         <!-- <a href="" id="upload_link">Upload your photo</a>​ -->
                 <!-- Masthead Heading-->
                 <!-- <p>I'm <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer"></span></p> -->
              
             </div>
+            <br>
+        
             <div>
                 <a href = "/editProfile/" type="button" class="btn btn-secondary">Edit Profile</a>            
             </div>

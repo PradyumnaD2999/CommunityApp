@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <form action="/editProfileView/">
+    <form action="/editProfileView/" method="post" id="editprofile">
         {% csrf_token %}
         <div class="form-group" style="line-height: 70px;">
             <label style="padding-right: 50px">Username:</label>
@@ -13,6 +13,9 @@
             <input class = "form-control col-md-2" type="text" name="lurl" style = "margin-right: 3%" value="{{ linkedinurl }}">  
             <label style="padding-right: 79px">Company:</label>
             <input class = "form-control col-md-2" type="text" name="company" style = "margin-right: 3%" value="{{ company }}">  
+
         </div>
+        <button type="submit" class="btn btn-black" style = "padding-right: 79px">Save Changes</button>
+    
     </form>
-{% endblock content %}extend base html in django block
+{% endblock content %}

@@ -10,12 +10,6 @@ import random
 from django.contrib.auth import get_user_model
 from loginpage.views import get_user_data
 
-#import cv2 
-import os,argparse 
-#import pytesseract ,re
-from PIL import Image 
-import csv
-#import pandas as pd
 
 config = {
 	'apiKey': "AIzaSyD-THXuPuvdtXFMBvy1-PJo-ueMWu0SJ-E",
@@ -45,9 +39,25 @@ def editProfile(request):
     return render(request, "editProfile.html", result)
 
 def editProfileView(request):
+
     username = request.POST.get('username')
     lurl = request.POST.get('lurl')
     bio = request.POST.get('bio')
     company = request.POST.get('company')
+    current_user = get_user_data()
+    email = current_user['email']
+    
+    print(company)
+    input = fs.collection(u'member').document(u'profiles').collection(u'data')
+    input.document(u'{}'.format(email)).update({
+		'company':company,
+		'linkedinUrl':lurl,
+	})
+    doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
+
+    doc = doc_ref.document(current_user['email'])
+	
+    result = doc.get().to_dict()
+
  
-    return render(request, "editProfile.html")
+    return render(request, "profile.html", result)
