@@ -9,6 +9,7 @@ from .models import Profile1
 import random
 from django.contrib.auth import get_user_model
 from loginpage.views import get_user_data
+from django import forms
 
 
 config = {
@@ -30,34 +31,33 @@ fs = firestore.client()
 # Create your views here.
 
 def editProfile(request):
-    data = get_user_data()
-    doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
-
-    doc = doc_ref.document(data['email'])
-	
-    result = doc.get().to_dict()
-    return render(request, "editProfile.html", result)
+    res = get_user_data()
+    return render(request, "editProfile.html", res)
 
 def editProfileView(request):
 
-    username = request.POST.get('username')
-    lurl = request.POST.get('lurl')
-    bio = request.POST.get('bio')
-    company = request.POST.get('company')
-    current_user = get_user_data()
-    email = current_user['email']
+    username = request.POST['username']
+    lurl = request.POST['lurl']
+    bio = request.POST['bio']
+    company = request.POST['company']
+    res = get_user_data()
+    email = res['email']
     
     print(company)
     input = fs.collection(u'member').document(u'profiles').collection(u'data')
     input.document(u'{}'.format(email)).update({
+        'username': username,
 		'company':company,
 		'linkedinUrl':lurl,
+        'bio': bio,
 	})
-    doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
-
-    doc = doc_ref.document(current_user['email'])
-	
-    result = doc.get().to_dict()
-
  
-    return render(request, "profile.html", result)
+    return render(request, "profile.html", res)
+
+def changeProfilePicture(request):
+    # picture = forms.ImageFields()
+    profilePic = request.FILES['profilePic']
+    print(profilePic)
+    res = get_user_data()
+    res['profilePic'] = profilePic
+    return render(request, "profile.html", res)

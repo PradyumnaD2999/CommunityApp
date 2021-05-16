@@ -7,5 +7,5 @@ urlpatterns = [
     #path('', UserProfileView.as_view(), name='Profile'),
     url(r'^editProfile/', views.editProfile, name='editProfile'),
     url(r'^editProfileView/', views.editProfileView, name='editProfile'),
-
+    url(r'^changeProfilePicture/', views.changeProfilePicture, name='changeProfilePicture'),
 ]

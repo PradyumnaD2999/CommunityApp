@@ -2,11 +2,15 @@
 {% load static %}
 
 {% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
     <form action="/editProfileView/" method="post" id="editprofile">
         {% csrf_token %}
         <div class="form-group" style="line-height: 70px;">
             <label style="padding-right: 50px">Username:</label>
-            <input class = "form-control col-md-2" type="text" name="username" style = "margin-right: 2.5%" value="{{ firstName }}">
+            <input class = "form-control col-md-2" type="text" name="username" style = "margin-right: 2.5%" value="{{ username }}">
             <label style="padding-right: 5px">Bio:</label>
             <input class = "form-control col-md-2" type="text" name="bio" style = "margin-right: 2.75%" value="{{ bio }}">
             <label style="padding-right: 79px">LinkedIn URL:</label>
@@ -15,7 +19,7 @@
             <input class = "form-control col-md-2" type="text" name="company" style = "margin-right: 3%" value="{{ company }}">  
 
         </div>
-        <button type="submit" class="btn btn-black" style = "padding-right: 79px">Save Changes</button>
+        <button type="submit" class="btn" style = "background-color: #000; color: #fff;">Save Changes</button>
     
     </form>
 {% endblock content %}

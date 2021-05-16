@@ -79,7 +79,9 @@ def loginAuth(request):
 	res = doc.get().to_dict()
 	print(res)
 	#user_data = res.copy()
-	return render(request, "dashboard.html",{"e":email})
+ 
+	res = get_user_data()
+	return render(request, "dashboard.html",res)
 
 def registrationRedirect(request):
     return render(request, "registration/registration.html")
@@ -140,6 +142,7 @@ def user_registration(request):
 		'company':company,
 		'idProof':idproof,
 		'linkedinUrl':lurl,
+		'username': fname + lname,
 	})
 	
 	#Code to check the data from IDproof
@@ -168,17 +171,7 @@ def user_registration(request):
 def ProfileRedirect(request):
 	
 	res = get_user_data()
-	fs = firestore.client()	
-	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
-
-	doc = doc_ref.document(res['email'])
-	
-	result = doc.get().to_dict()
-	print(result['firstName'])
-	
-	print(result)
-	
-	return render(request, "profile.html",result)
+	return render(request, "profile.html",res)
 
 
 def get_user_data():
@@ -187,10 +180,20 @@ def get_user_data():
 	email = currentuser['email']
 	print(currentuser['email'])
 	print(email)
-	return currentuser
+	
+	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
+
+	doc = doc_ref.document(currentuser['email'])
+	
+	result = doc.get().to_dict()
+	print(result['firstName'])
+	
+	print(result)
+	return result
 
 def DashboardView(request):
 	#user = auth.get_user(uid)
+	res = get_user_data()
 	print('dashboard output')
-	return render(request, "dashboard.html")
+	return render(request, "dashboard.html", res)
 

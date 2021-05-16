@@ -1,54 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>User Profile</title>
-        <!-- Favicon-->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'Dashboardcss/css/styles.css' %}" rel="stylesheet" type="text/css">    
-        <link href="{% static 'Dashboardcss/css/profilepage.css' %}" rel="stylesheet" type="text/css">  
-          
-
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg bg-dark text-uppercase fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="{% url 'Dashboard' %}">Hi {{ firstName }}</a>
-                <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio"><i class="fas fa-users fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about"><i class="far fa-bell fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="far fa-comments fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="fas fa-search fa-2x"></i></a></li>
-                        <!-- <img src="download.png" alt="" class="rounded-circle ml-3 d-none d-md-block" class="float-left" class="img-fluid" width="40px" height="40px"> -->
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="fas fa-user-friends fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href=""><i class="fas fa-user-circle fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt fa-2x"></i></a></li>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+{% block content %}
         <!-- Masthead-->
         <!-- <img src="coverimg.jpeg" alt="Nature" class="responsive"> -->
 
@@ -64,7 +17,7 @@
                 <!-- Masthead Avatar Image-->
                 <div class="img-wrapper">
                 <img class="masthead-avatar mb-5" src="{% static 'Dashboardcss/assets/img.png' %}" width="200" height="250" alt="add profile picture"/>
-                <div class="img-overlay">
+                {% comment %} <div class="img-overlay">
                     <!-- <a href="/home/neha/Desktop" class="icon"> -->
                         
                         <div>
@@ -75,9 +28,16 @@
                             
                         </div>
                     
-                    </div>
+                </div> {% endcomment %}
                 </div>
-                <input id="upload" type="file"/>
+                <form action="/changeProfilePicture/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row justify-content-center">
+                        <input id="upload" type="file" name="profilePic"/>
+                        <button type="submit" class="btn" style="background-color: #000; color: #fff;">Change</button>
+                    </div>
+                </form>
+                <p>{{ profilePic }}</p>
                          <!-- <a href="" id="upload_link">Upload your photo</a>​ -->
                 <!-- Masthead Heading-->
                 <!-- <p>I'm <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer"></span></p> -->
@@ -86,7 +46,7 @@
             <br>
         
             <div>
-                <a href = "/editProfile/" type="button" class="btn btn-secondary">Edit Profile</a>            
+                <a href = "/editProfile/" type="button" class="btn" style="background-color: #000; color: #fff;">Edit Profile</a>            
             </div>
                 <!-- Icon Divider-->
                 <div class="divider-custom divider-dark">
@@ -99,7 +59,7 @@
                 <h2 class="masthead-heading mb-0"><h1>{{ firstName }} {{ lastName }}</h1>
                 </h2>
 
-                <p class="masthead-subheading font-weight-light mb-0">Graphic Artist - Web Designer - Illustrator</p>
+                <p class="masthead-subheading font-weight-light mb-0">{{ bio }}</p>
             </div>
         </header>
         <!-- Portfolio Section-->
@@ -173,7 +133,7 @@
             </div>
         </section>
         <!-- About Section-->
-        <section class="page-section bg-primary text-white mb-0" id="about">
+        <section class="page-section bg-secondary text-white mb-0" id="about">
             <div class="container">
                 <!-- About Section Heading-->
                 <h2 class="page-section-heading text-center text-uppercase text-white">About</h2>
@@ -184,16 +144,29 @@
                     <div class="divider-custom-line"></div>
                 </div>
                 <!-- About Section Content-->
-                <div class="row">
-                    <div class="col-lg-4 ml-auto"><p class="lead">Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional SASS stylesheets for easy customization.</p></div>
-                    <div class="col-lg-4 mr-auto"><p class="lead">You can create your own custom avatar for the masthead, change the icon in the dividers, and add your email address to the contact form to make it fully functional!</p></div>
-                </div>
-                <!-- About Section Button-->
-                <div class="text-center mt-4">
-                    <a class="btn btn-xl btn-outline-light" href="https://startbootstrap.com/theme/freelancer/">
-                        <i class="fas fa-download mr-2"></i>
-                        Free Download!
-                    </a>
+                <div class="container" style="font-size: 1.2rem;">
+                    <div class="row">
+                        <span class="col-md-4"><strong>First Name:</strong> {{ firstName }}</span>
+                        <span class="col-md-4"><strong>Middle Name:</strong> {{ middleName }}</span>
+                        <span class="col-md-4"><strong>Last Name:</strong> {{ lastName }}</span>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <span class="col-md-4"><strong>Username:</strong> {{ username }}</span>
+                        <span class="col-md-4"><strong>Email:</strong> {{ email }}</span>
+                        <span class="col-md-4"><strong>Contact:</strong> {{ contact }}</span>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <span class="col-md-4"><strong>Branch:</strong> {{ branch }}</span>
+                        <span class="col-md-4"><strong>Company:</strong> {{ company }}</span>
+                        <span class="col-md-4"><strong>Graduation:</strong> {{ graduation }}</span>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <span class="col-md-4"><strong>Id Proof:</strong> {{ idProof }}</span>
+                        <span class="col-md-4"><strong>LinkedIn URL:</strong> {{ linkedinUrl }}</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -505,5 +478,4 @@
         <script src="assets/mail/contact_me.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-    </body>
-</html>
+{% endblock content %}
