@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+        
+            <form action="/searchUser/" method="post" id="searchUser" class="form-inline">
+                {% csrf_token %}
+                <div class="form-group">
+                <input type="text" class="form-control w-100" name="search_Str" placeholder="Search">
+                <button type="submit" class="btn">
+                    <i class="fa fa-search"></i>
+                  </div>
+                  </button>
+                </form>
+              
+           
+       
+{% endblock content %}

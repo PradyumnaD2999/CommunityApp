@@ -20,8 +20,11 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'Dashboardcss/css/styles.css' %}" rel="stylesheet" type="text/css">    </head>
-    <body id="page-top">
+        <link href="{% static 'Dashboardcss/css/styles.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'Dashboardcss/css/postscss.css' %}" rel="stylesheet" type="text/css">
+    </head>
+    
+        <body id="page-top">
 
         <nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav" style="background-color:#000;">
         
@@ -38,7 +41,7 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'groupsView' %}"><i class="fas fa-users fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about"><i class="far fa-bell fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="far fa-comments fa-2x"></i></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="fas fa-search fa-2x"></i></a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'searchUserview' %}"><i class="fas fa-search fa-2x"></i></a></li>
                         <!-- <img src="download.png" alt="" class="rounded-circle ml-3 d-none d-md-block" class="float-left" class="img-fluid" width="40px" height="40px"> -->
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href=""><i class="fas fa-user-friends fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'Profile' %}"><i class="fas fa-user-circle fa-2x"></i></a></li>
@@ -48,7 +51,22 @@
                 </div>
             </div>
         </nav>
-
+         
+        <div class="container d-flex align-items-center flex-column">
+                <!-- Masthead Avatar Image-->
+                
+                <!-- Masthead Heading-->
+                
+                <!-- Icon Divider-->
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <!-- Masthead Subheading-->
+                
+        </div>
+        
         {% block content %}{% endblock content %}
         
         <!-- Masthead-->

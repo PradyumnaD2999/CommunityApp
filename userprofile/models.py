@@ -10,7 +10,7 @@ from autoslug import AutoSlugField
 
 class Profile1(models.Model):
     user1 = models.OneToOneField(User, on_delete=models.CASCADE)
-    image1 = models.ImageField(default='default.png', upload_to='profile_pics')
+    image1 = models.ImageField(default='default.png', upload_to='images/')
     slug1 = AutoSlugField(populate_from='user')
     bio1 = models.CharField(max_length=255, blank=True)
     company = models.CharField(max_length=255, blank=True)

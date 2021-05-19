@@ -9,7 +9,7 @@ from .models import Profile1
 import random
 from django.contrib.auth import get_user_model
 from loginpage.views import get_user_data
-from django import forms
+
 
 
 config = {
@@ -60,4 +60,26 @@ def changeProfilePicture(request):
     print(profilePic)
     res = get_user_data()
     res['profilePic'] = profilePic
+    email = res['email']
+
+    input = fs.collection(u'member').document(u'profiles').collection(u'data')
+    input.document(u'{}'.format(email)).update({
+        'profilePic': profilePic,
+	})
+
     return render(request, "profile.html", res)
+
+def searchUserview(request):
+    res = get_user_data()
+    return render(request, "search.html",res)
+
+def searchUser(request):
+    res = get_user_data()
+    	
+    search_Str = request.POST['search_Str'] 
+
+    res['str'] = search_Str
+    input = fs.collection(u'member').document(u'profiles').collection(u'data')
+    
+
+    return render(request, "search.html",res)

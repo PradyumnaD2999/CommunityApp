@@ -52,7 +52,7 @@ def loginAuth(request):
 	passw = request.POST.get("pass")
 	userType = request.POST.get("usertype")
 	print(userType)
-	if not fs.collection(u'{}'.format(userType)).document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
+	if not fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
 		msg = "Please enter valid credentials"
 		return render(request,"registration/login.html",{"messg":msg})
 	try:
@@ -143,6 +143,7 @@ def user_registration(request):
 		'idProof':idproof,
 		'linkedinUrl':lurl,
 		'username': fname + lname,
+		'userType': 'member',
 	})
 	
 	#Code to check the data from IDproof
