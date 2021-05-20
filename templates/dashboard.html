@@ -360,7 +360,10 @@
                         </div>
 
                     </div>
+
                     <div class="card-body">
+                        <a href="{% url 'fetchPost' %}">See Submitted Posts</a>
+
                         <!-- <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
                         <a class="card-link" href="#">
                             <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
@@ -370,7 +373,7 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
                             sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
                         </p> -->
-                        <p>{{ description }}</p>
+                        
                     </div>
                     <div class="card-footer">
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
@@ -391,7 +394,7 @@
                                     <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
+                                    <div class="h5 m-0">{{ owner }}</div>
                                     <div class="h7 text-muted">Miracles Lee Cross</div>
                                 </div>
                             </div>

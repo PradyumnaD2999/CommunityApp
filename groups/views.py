@@ -39,8 +39,11 @@ def groupsView(request):
 
 
 def createPost(request):
+    res = get_user_data()
+    if request.method == "POST":
+        post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
 
-    
+        
     return render(request, "dashboard.html")
 
 def submitPost(request):
@@ -62,11 +65,11 @@ def submitPost(request):
 
 def fetchPost(request):
     res = get_user_data()
-    if request.method == "POST":
-        posts = []
+    if request.method == "GET":
         post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-        for postid in post_data:
-            posts.push(postid)
-            print(posts)
-
-    return render(request, "dashboard.html", res, posts)
+        
+        posts = post_data.document('default')
+        post1 = posts.get().to_dict()        
+        print(post1['owner'])
+        
+    return render(request, "dashboard.html", res)
