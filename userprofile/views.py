@@ -35,51 +35,53 @@ def editProfile(request):
     return render(request, "editProfile.html", res)
 
 def editProfileView(request):
-
-    username = request.POST['username']
-    lurl = request.POST['lurl']
-    bio = request.POST['bio']
-    company = request.POST['company']
     res = get_user_data()
-    email = res['email']
-    
-    print(company)
-    input = fs.collection(u'member').document(u'profiles').collection(u'data')
-    input.document(u'{}'.format(email)).update({
-        'username': username,
-		'company':company,
-		'linkedinUrl':lurl,
-        'bio': bio,
-	})
+
+    if request.method == "POST":
+        username = request.POST['username']
+        lurl = request.POST['lurl']
+        bio = request.POST['bio']
+        company = request.POST['company']
+        email = res['email']
+        
+        print(company)
+        input = fs.collection(u'member').document(u'profiles').collection(u'data')
+        input.document(u'{}'.format(email)).update({
+            'username': username,
+            'company':company,
+            'linkedinUrl':lurl,
+            'bio': bio,
+        })
  
     return render(request, "profile.html", res)
 
 def changeProfilePicture(request):
-    # picture = forms.ImageFields()
-    profilePic = request.FILES['profilePic']
-    print(profilePic)
     res = get_user_data()
-    res['profilePic'] = profilePic
-    email = res['email']
+    if request.method == "POST":
+        profilePic = request.FILES['profilePic']
+        print(profilePic)
+        res['profilePic'] = profilePic
+        email = res['email']
 
-    input = fs.collection(u'member').document(u'profiles').collection(u'data')
-    input.document(u'{}'.format(email)).update({
-        'profilePic': profilePic,
-	})
+        input = fs.collection(u'member').document(u'profiles').collection(u'data')
+        input.document(u'{}'.format(email)).update({
+            'profilePic': profilePic,
+        })
 
     return render(request, "profile.html", res)
 
 def searchUserview(request):
     res = get_user_data()
+    
     return render(request, "search.html",res)
 
 def searchUser(request):
     res = get_user_data()
-    	
-    search_Str = request.POST['search_Str'] 
+    if request.method == "POST":	
+        search_Str = request.POST['search_Str'] 
 
-    res['str'] = search_Str
-    input = fs.collection(u'member').document(u'profiles').collection(u'data')
+        res['str'] = search_Str
+        input = fs.collection(u'member').document(u'profiles').collection(u'data')
     
 
     return render(request, "search.html",res)

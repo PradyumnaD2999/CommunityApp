@@ -48,38 +48,32 @@ fs = firestore.client()
 global res
 res = {}
 def loginAuth(request):
-	email=request.POST.get('email')
-	passw = request.POST.get("pass")
-	userType = request.POST.get("usertype")
-	print(userType)
-	if not fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
-		msg = "Please enter valid credentials"
-		return render(request,"registration/login.html",{"messg":msg})
-	try:
-		user = authe.sign_in_with_email_and_password(email,passw)
-	except:
-		message="invalid credentials"
-		return render(request,"registration/login.html",{"messg":message})
+	if request.method == "POST":
+
+		email=request.POST.get('email')
+		passw = request.POST.get("pass")
+		userType = request.POST.get("usertype")
+		print(userType)
+		if not fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
+			msg = "Please enter valid credentials"
+			return render(request,"registration/login.html",{"messg":msg})
+		try:
+			user = authe.sign_in_with_email_and_password(email,passw)
+		except:
+			message="invalid credentials"
+			return render(request,"registration/login.html",{"messg":message})
+		
+		session_id=user['idToken']
+		request.session['uid']=str(session_id)
+		idtoken=request.session.get('uid',None)
+		
+
+		currentuser = authe.current_user
+
+		email = currentuser['email']
+		print(currentuser['email'])
+		
 	
-	session_id=user['idToken']
-	request.session['uid']=str(session_id)
-	idtoken=request.session.get('uid',None)
-	print(idtoken)
-	print(user['idToken'])
-#	auth.get_account_info(user['idToken'])
-
-	currentuser = authe.current_user
-
-	email = currentuser['email']
-	print(currentuser['email'])
-	print(email)
-	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
-	doc = doc_ref.document(email)
-	print(doc)
-	res = doc.get().to_dict()
-	print(res)
-	#user_data = res.copy()
- 
 	res = get_user_data()
 	return render(request, "dashboard.html",res)
 
@@ -88,84 +82,86 @@ def registrationRedirect(request):
 
 
 def user_registration(request):
-	email=request.POST.get('email')
-	fname=request.POST.get('firstname')
-	mname=request.POST.get('middlename')
-	lname=request.POST.get('lastname')
-	contact=request.POST.get('contact')
-	grad=request.POST.get('graduation')
-	branch=request.POST.get('branch')
-	company=request.POST.get('company')
-	idproof=request.POST.get('idproof')
-	lurl=request.POST.get('linkedinurl')
-	pw1=request.POST.get('password1')
-	pw2=request.POST.get('password2')
+	if request.method == "POST":
 
-	name = fname+' '+lname 
-	#print(name)
-	colunms = ['username','password','firstname','lastname','email','institution','department']
+		email=request.POST.get('email')
+		fname=request.POST.get('firstname')
+		mname=request.POST.get('middlename')
+		lname=request.POST.get('lastname')
+		contact=request.POST.get('contact')
+		grad=request.POST.get('graduation')
+		branch=request.POST.get('branch')
+		company=request.POST.get('company')
+		idproof=request.POST.get('idproof')
+		lurl=request.POST.get('linkedinurl')
+		pw1=request.POST.get('password1')
+		pw2=request.POST.get('password2')
 
-	#path = "/home/neha/Downloads/BEMOODLE.csv"
-	#df = pd.read_csv(path, names=colunms)
-	#print(df.head())
+		name = fname+' '+lname 
+		#print(name)
+		colunms = ['username','password','firstname','lastname','email','institution','department']
 
-	# for i in df['lastname']:
-	# 	if i == name:
-	# 		print('found')
+		#path = "/home/neha/Downloads/BEMOODLE.csv"
+		#df = pd.read_csv(path, names=colunms)
+		#print(df.head())
+
+		# for i in df['lastname']:
+		# 	if i == name:
+		# 		print('found')
 
 
-	if fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
-		msg = "This e-mail is already associated with another account!"
-		return render(request,"registration/login.html",{"messg":msg})
-	elif fs.collection(u'superadmin').document(u'registration').collection(u'member').document(u'{}'.format(email)).get().exists:
-		msg = "Registered with this e-mail,verification pending."
-		return render(request,"registration/login.html",{"messg":msg})
+		if fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
+			msg = "This e-mail is already associated with another account!"
+			return render(request,"registration/login.html",{"messg":msg})
+		elif fs.collection(u'superadmin').document(u'registration').collection(u'member').document(u'{}'.format(email)).get().exists:
+			msg = "Registered with this e-mail,verification pending."
+			return render(request,"registration/login.html",{"messg":msg})
 
-	#add to superadmin db for profile verification
-	#reg=fs.collection(u'superadmin').document(u'registration').collection(u'member')
- 
-	authe.create_user_with_email_and_password(email, pw1)
-	reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
-	reg.document(u'{}'.format(email)).set({
-		'password':pw1
-	})
- 
-	data = fs.collection(u'member').document(u'profiles').collection(u'data')
-	data.document(u'{}'.format(email)).set({
-		'firstName': fname,
-		'middleName':mname,
-		'lastName':lname,
-		'email':email,
-		'contact':contact,
-		'graduation':grad,
-		'branch':branch,
-		'company':company,
-		'idProof':idproof,
-		'linkedinUrl':lurl,
-		'username': fname + lname,
-		'userType': 'member',
-	})
+		#add to superadmin db for profile verification
+		#reg=fs.collection(u'superadmin').document(u'registration').collection(u'member')
 	
-	#Code to check the data from IDproof
-	'''
-	images=cv2.imread(idproof) 
-	gray=cv2.cvtColor(images, cv2.COLOR_BGR2GRAY) 
-	#memory usage with image i.e. adding image to memory 
-	#filename = "{}.jpg".format(os.getpid()) 
-	#cv2.imwrite(filename, gray) 
-	text = pytesseract.image_to_string(gray)
-	f= open("out.txt","w+")
-	f.write(text)
-	f.close()
-	name_list = []
+		authe.create_user_with_email_and_password(email, pw1)
+		reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
+		reg.document(u'{}'.format(email)).set({
+			'password':pw1
+		})
+	
+		data = fs.collection(u'member').document(u'profiles').collection(u'data')
+		data.document(u'{}'.format(email)).set({
+			'firstName': fname,
+			'middleName':mname,
+			'lastName':lname,
+			'email':email,
+			'contact':contact,
+			'graduation':grad,
+			'branch':branch,
+			'company':company,
+			'idProof':idproof,
+			'linkedinUrl':lurl,
+			'username': fname + lname,
+			'userType': 'member',
+		})
+		
+		#Code to check the data from IDproof
+		'''
+		images=cv2.imread(idproof) 
+		gray=cv2.cvtColor(images, cv2.COLOR_BGR2GRAY) 
+		#memory usage with image i.e. adding image to memory 
+		#filename = "{}.jpg".format(os.getpid()) 
+		#cv2.imwrite(filename, gray) 
+		text = pytesseract.image_to_string(gray)
+		f= open("out.txt","w+")
+		f.write(text)
+		f.close()
+		name_list = []
 
-	with open ('out.txt', 'rt') as myfile:
-		for myline in myfile:
-			name_list.append(myline)
-	for item in name_list:
-		if name == item :
-			print('Found on ID proof!')
-'''
+		with open ('out.txt', 'rt') as myfile:
+			for myline in myfile:
+				name_list.append(myline)
+		for item in name_list:
+			if name == item :
+				print('Found on ID proof!')
+	'''
 	return render(request, "registration/login.html")
 
 
@@ -179,22 +175,17 @@ def get_user_data():
 	currentuser = authe.current_user
 
 	email = currentuser['email']
-	print(currentuser['email'])
-	print(email)
 	
 	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
 
 	doc = doc_ref.document(currentuser['email'])
 	
 	result = doc.get().to_dict()
-	print(result['firstName'])
 	
-	print(result)
 	return result
 
 def DashboardView(request):
-	#user = auth.get_user(uid)
-	res = get_user_data()
-	print('dashboard output')
+	
+	res = get_user_data()	
 	return render(request, "dashboard.html", res)
 
