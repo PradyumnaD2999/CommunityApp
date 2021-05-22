@@ -186,9 +186,11 @@ def fetchPost():
     posts = post_data.document('24WH792WG9')
     posts1 = post_data.document('DEND3H2VQZ')
     posts2 = post_data.document('DH5JNRGPSL')
+    posts3 = post_data.document('M1D5JOI0ZN')
     post1 = posts.get().to_dict()    
     post2 = posts1.get().to_dict()   
-    post3 = posts2.get().to_dict()       
+    post3 = posts2.get().to_dict()    
+    post4 = posts3.get().to_dict()   
     print(post1['owner'])
     res['description1'] = post1['description']
     res['owner1'] = post1['owner']
@@ -199,6 +201,9 @@ def fetchPost():
     res['description3'] = post3['description']
     res['owner3'] = post3['owner']
     res['date3'] = post3['date']
+    res['description4'] = post4['description']
+    res['owner4'] = post4['owner']
+    res['date4'] = post4['date']
 
     return res
 
