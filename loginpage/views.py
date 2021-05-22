@@ -180,32 +180,23 @@ def get_user_data():
 	return result
 
 def fetchPost():
-    res = get_user_data()
-    post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-        
-    posts = post_data.document('24WH792WG9')
-    posts1 = post_data.document('DEND3H2VQZ')
-    posts2 = post_data.document('DH5JNRGPSL')
-    posts3 = post_data.document('M1D5JOI0ZN')
-    post1 = posts.get().to_dict()    
-    post2 = posts1.get().to_dict()   
-    post3 = posts2.get().to_dict()    
-    post4 = posts3.get().to_dict()   
-    print(post1['owner'])
-    res['description1'] = post1['description']
-    res['owner1'] = post1['owner']
-    res['date1'] = post1['date']
-    res['description2'] = post2['description']
-    res['owner2'] = post2['owner']
-    res['date2'] = post2['date']
-    res['description3'] = post3['description']
-    res['owner3'] = post3['owner']
-    res['date3'] = post3['date']
-    res['description4'] = post4['description']
-    res['owner4'] = post4['owner']
-    res['date4'] = post4['date']
+	res = get_user_data()
+	posts = []
+	if res['userType'] == 'admin':
+		post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
+		postData = post_data.where(u'default', u'==', False).order_by(u'timestamp', direction=firestore.Query.DESCENDING).stream()
+		for pd in postData:
+			posts.append(pd.to_dict())
+    
+	elif res['userType'] == 'member':
+		post_data = fs.collection(u'member').document(u'posts').collection(u'feed')
+		postData = post_data.order_by(u'timestamp', direction=firestore.Query.DESCENDING).stream()
+		for pd in postData:
+			posts.append(pd.to_dict())
 
-    return res
+	res['posts'] = posts
+	print(res)
+	return res
 
 def DashboardView(request):
 	
