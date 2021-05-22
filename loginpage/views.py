@@ -74,7 +74,7 @@ def loginAuth(request):
 		print(currentuser['email'])
 		
 	
-	res = get_user_data()
+	res = fetchPost()
 	return render(request, "dashboard.html",res)
 
 def registrationRedirect(request):
@@ -173,19 +173,27 @@ def ProfileRedirect(request):
 
 def get_user_data():
 	currentuser = authe.current_user
-
-	email = currentuser['email']
-	
+	email = currentuser['email']	
 	doc_ref = fs.collection(u'member').document(u'profiles').collection(u'data')
-
-	doc = doc_ref.document(currentuser['email'])
-	
+	doc = doc_ref.document(currentuser['email'])	
 	result = doc.get().to_dict()
-	
 	return result
+
+def fetchPost():
+    res = get_user_data()
+    post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
+        
+    posts = post_data.document('24WH792WG9')
+    post1 = posts.get().to_dict()        
+    print(post1['owner'])
+    res['description'] = post1['description']
+    res['owner'] = post1['owner']
+    res['date'] = post1['date']
+
+    return res
 
 def DashboardView(request):
 	
-	res = get_user_data()	
+	res = fetchPost()
 	return render(request, "dashboard.html", res)
 

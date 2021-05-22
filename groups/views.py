@@ -1,4 +1,4 @@
-from loginpage.views import get_user_data
+from loginpage.views import get_user_data, fetchPost
 from django.shortcuts import render
 import pyrebase
 from django.contrib import auth
@@ -6,6 +6,7 @@ from firebase_admin import credentials,firestore,db,auth
 import firebase_admin
 import random
 import string
+import datetime
 
 
 
@@ -39,16 +40,24 @@ def groupsView(request):
 
 
 def createPost(request):
-    res = get_user_data()
+    res = fetchPost()
     if request.method == "POST":
         post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-
+        postData = post_data.get().to_dict()
+        postID = randomID()
+        postDataUser = fs.collection(u'member').document(u'posts').collection(u'feed')
+        postDataUser.document(u'{}'.format(postID)).set({
+            'description': postData['description'],
+            'owner': postData['owner'],
+            'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        })
+        # post_data.document(u'').delete()
         
-    return render(request, "dashboard.html")
+    return render(request, "dashboard.html", res)
 
 def submitPost(request):
 
-    res = get_user_data()
+    res = fetchPost()
     if request.method == "POST":
 
         desc = request.POST.get('desc')
@@ -58,18 +67,7 @@ def submitPost(request):
         post_data.document(u'{}'.format(postID)).set({
             'description': desc,
             'owner': owner,
+            'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         })
 
-    
-    return render(request, "dashboard.html")    
-
-def fetchPost(request):
-    res = get_user_data()
-    if request.method == "GET":
-        post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-        
-        posts = post_data.document('default')
-        post1 = posts.get().to_dict()        
-        print(post1['owner'])
-        
     return render(request, "dashboard.html", res)
