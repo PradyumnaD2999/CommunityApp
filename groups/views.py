@@ -43,7 +43,7 @@ def createPost(request):
     res = fetchPost()
     if request.method == "POST":
         post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-        postData = post_data.get().to_dict()
+        postData = post_data.document(u'M1D5JOI0ZN').get().to_dict()
         postID = randomID()
         postDataUser = fs.collection(u'member').document(u'posts').collection(u'feed')
         postDataUser.document(u'{}'.format(postID)).set({
@@ -64,7 +64,12 @@ def submitPost(request):
         owner = res['firstName'] + res['lastName']
         postID = randomID()
         post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-        post_data.document(u'{}'.format(postID)).set({
+        # post_data.document(u'{}'.format(postID)).set({
+        #     'description': desc,
+        #     'owner': owner,
+        #     'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        # })
+        post_data.document(u'M1D5JOI0ZN').update({
             'description': desc,
             'owner': owner,
             'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
