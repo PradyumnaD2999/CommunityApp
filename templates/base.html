@@ -38,7 +38,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'groupsView' %}"><i class="fas fa-users fa-2x"></i></a></li>
+                        {% comment %} <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'groupsView' %}"><i class="fas fa-users fa-2x"></i></a></li> {% endcomment %}
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about"><i class="far fa-bell fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact"><i class="far fa-comments fa-2x"></i></a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'searchUserview' %}"><i class="fas fa-search fa-2x"></i></a></li>
@@ -186,9 +186,9 @@
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Location</h4>
                         <p class="lead mb-0">
-                            2215 John Daniel Drive
+                            Example
                             <br />
-                            Clark, MO 65243
+                            Address
                         </p>
                     </div>
                     <!-- Footer Social Icons-->
@@ -201,11 +201,10 @@
                     </div>
                     <!-- Footer About Text-->
                     <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">About Freelancer</h4>
+                        <h4 class="text-uppercase mb-4">About Company</h4>
                         <p class="lead mb-0">
-                            Freelance is a free to use, MIT licensed Bootstrap theme created by
-                            <a href="http://startbootstrap.com">Start Bootstrap</a>
-                            .
+                            Company Description
+                            {% comment %} <a href="http://startbootstrap.com">Start Bootstrap</a> {% endcomment %}
                         </p>
                     </div>
                 </div>
@@ -213,7 +212,7 @@
         </footer>
         <!-- Copyright Section-->
         <div class="copyright py-4 text-center text-white">
-            <div class="container"><small>Copyright © Your Website 2020</small></div>
+            <div class="container"><small>Copyright © Your Website 2021</small></div>
         </div>
         <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
         <div class="scroll-to-top d-lg-none position-fixed">

@@ -184,11 +184,21 @@ def fetchPost():
     post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
         
     posts = post_data.document('24WH792WG9')
-    post1 = posts.get().to_dict()        
+    posts1 = post_data.document('DEND3H2VQZ')
+    posts2 = post_data.document('DH5JNRGPSL')
+    post1 = posts.get().to_dict()    
+    post2 = posts1.get().to_dict()   
+    post3 = posts2.get().to_dict()       
     print(post1['owner'])
-    res['description'] = post1['description']
-    res['owner'] = post1['owner']
-    res['date'] = post1['date']
+    res['description1'] = post1['description']
+    res['owner1'] = post1['owner']
+    res['date1'] = post1['date']
+    res['description2'] = post2['description']
+    res['owner2'] = post2['owner']
+    res['date2'] = post2['date']
+    res['description3'] = post3['description']
+    res['owner3'] = post3['owner']
+    res['date3'] = post3['date']
 
     return res
 
