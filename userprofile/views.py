@@ -9,6 +9,9 @@ from .models import Profile1
 import random
 from django.contrib.auth import get_user_model
 from loginpage.views import get_user_data
+from django.http import HttpResponseRedirect
+import os
+from django.core.files.storage import FileSystemStorage
 
 
 
@@ -58,17 +61,28 @@ def editProfileView(request):
 def changeProfilePicture(request):
     res = get_user_data()
     if request.method == "POST":
-        profilePic = request.FILES['profilePic']
-        print(profilePic)
-        res['profilePic'] = profilePic
-        email = res['email']
+        profilePic = request.FILES['profilePic'] if 'profilePic' in request.FILES else None
+        fname = profilePic.name
+        print(fname)
+        f = FileSystemStorage()
+        file = f.save(fname, profilePic)
+            # the fileurl variable now contains the url to the file. This can be used to serve the file when needed.
+        fileurl = f.url(file)
+        
+        
+        #return HttpResponseRedirect('/success/url/')
+        
 
         input = fs.collection(u'member').document(u'profiles').collection(u'data')
-        input.document(u'{}'.format(email)).update({
-            'profilePic': profilePic,
-        })
+        input.document(u'{}'.format(res['email'])).update({
+            'profilePicurl': fileurl,
+            })
+        res = get_user_data()
+        print(res['profilePicurl'])
 
     return render(request, "profile.html", res)
+
+ 
 
 def searchUserview(request):
     res = get_user_data()

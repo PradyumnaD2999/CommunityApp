@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 #FIREBASE_PATH = os.path.join(BASE_DIR, 'wbca-mmcoe2021-firebase-adminsdk-4mnlv-e359f7b1aa.json')
 
