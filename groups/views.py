@@ -7,6 +7,8 @@ import firebase_admin
 import random
 import string
 import datetime
+from django.core.files.storage import FileSystemStorage
+import os
 
 
 
@@ -56,6 +58,7 @@ def createPost(request):
             'owner': postData1['owner'],
             'date': datetime.datetime.now().strftime("%b %d, %Y at %H:%M"),
             'timestamp': datetime.datetime.now().strftime("%Y%m%d%H%M%S%f"),
+            'imgpostUrl' : postData1['imgpostUrl']
         })
 
     res = fetchPost()        
@@ -77,10 +80,40 @@ def submitPost(request):
             'default': False,
             'timestamp': datetime.datetime.now().strftime("%Y%m%d%H%M%S%f"),
         })
+
+        
         # post_data.document(u'M1D5JOI0ZN').update({
         #     'description': desc,
         #     'owner': owner,
         #     'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         # })
+
+    return render(request, "dashboard.html", res)
+
+def submitimagePost(request):
+    res = fetchPost()
+    if request.method == "POST":
+
+        postimg = request.FILES['postimg'] if 'postimg' in request.FILES else None
+        postdesc = request.POST.get('postdesc')
+
+        fname = postimg.name
+        print(fname)
+        f = FileSystemStorage()
+        file = f.save(fname, postimg)
+        fileurl = f.url(file)
+        owner = res['firstName'] + res['lastName']
+        postID = randomID()
+
+        post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
+        post_data.document(u'{}'.format(postID)).set({
+            'owner': owner,
+            'description' : postdesc,
+            'date': datetime.datetime.now().strftime("%b %d, %Y at %H:%M:%S #%f"),
+            'default': False,
+            'timestamp': datetime.datetime.now().strftime("%Y%m%d%H%M%S%f"),
+            'imgpostUrl' : fileurl,
+        })
+        
 
     return render(request, "dashboard.html", res)

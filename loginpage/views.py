@@ -195,7 +195,7 @@ def fetchPost():
 			posts.append(pd.to_dict())
 
 	res['posts'] = posts
-	print(res)
+	#print(res)
 	return res
 
 def DashboardView(request):

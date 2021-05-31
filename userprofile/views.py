@@ -72,7 +72,6 @@ def changeProfilePicture(request):
         
         #return HttpResponseRedirect('/success/url/')
         
-
         input = fs.collection(u'member').document(u'profiles').collection(u'data')
         input.document(u'{}'.format(res['email'])).update({
             'profilePicurl': fileurl,
