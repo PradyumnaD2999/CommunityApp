@@ -60,11 +60,24 @@
                      <label style="padding-right: 59px">Password:</label>
     				      <input class = "form-control col-md-3" type="password" name="password1" style = "margin-right: 3.75%" required>
                      <label style="padding-right: 52px">Confirm Password:</label>
-                     <input class = "form-control col-md-3" type="password" name="password2" style = "margin-right: 3%" required>
+                     <input class = "form-control col-md-3" type="password" name="password2" style = "margin-right: 3%" onChange="validate()" required>
                   </div>
 
                   <button type="submit" class="btn btn-black" style = "margin-top: 4%; margin-left: 143%; padding: 5px 35px;">Register</button>
                </form>
+               <script>
+                  function validate() {
+                     let password1 = document.querySelector('input[name="password1"]');
+                     let password2 = document.querySelector('input[name="password2"]');
+                     if(password1.value != password2.value) {
+                        console.log(password1.value)
+                        console.log(password2.value)
+                        password2.setCustomValidity('Passwords do not match');
+                     } else {
+                        password2.setCustomValidity('');
+                     }
+                  }
+               </script>
             </div>
          </div>
       </div>

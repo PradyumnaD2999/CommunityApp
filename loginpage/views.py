@@ -88,7 +88,7 @@ def user_registration(request):
 
 		name = fname+' '+lname 
 
-		if fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
+		if fs.collection(u'member').document(u'profiles').collection(u'data').document(u'{}'.format(email)).get().exists:
 			msg = "This e-mail is already associated with another account!"
 			return render(request,"registration/login.html",{"messg":msg})
 		elif fs.collection(u'superadmin').document(u'registration').collection(u'member').document(u'{}'.format(email)).get().exists:
@@ -99,10 +99,10 @@ def user_registration(request):
 		#reg=fs.collection(u'superadmin').document(u'registration').collection(u'member')
 	
 		authe.create_user_with_email_and_password(email, pw1)
-		# reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
-		# reg.document(u'{}'.format(email)).set({
-		# 	'password':pw1
-		# })
+		reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
+		reg.document(u'{}'.format(email)).set({
+			'password':pw1
+		})
 	
 		data = fs.collection(u'member').document(u'profiles').collection(u'data')
 		data.document(u'{}'.format(email)).set({

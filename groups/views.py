@@ -67,11 +67,13 @@ def submitPost(request):
         postimg = request.FILES['postimg'] if 'postimg' in request.FILES else None
         desc = request.POST.get('desc')
 
-        fname = postimg.name
-        print(fname)
-        f = FileSystemStorage()
-        file = f.save(fname, postimg)
-        fileurl = f.url(file)
+        fileurl = ''
+        if postimg != None:
+            fname = postimg.name
+            print(fname)
+            f = FileSystemStorage()
+            file = f.save(fname, postimg)
+            fileurl = f.url(file)
         owner = res['firstName'] + res['lastName']
         postID = randomID()
 
