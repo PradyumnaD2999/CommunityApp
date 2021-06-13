@@ -8,13 +8,16 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile, FriendRequest
 import random
 from django.contrib.auth import get_user_model
-
-#import cv2 
+from django.core.mail import send_mail
+import smtplib, ssl
+from django.core.files.storage import FileSystemStorage
+import cv2 
 import os,argparse 
-#import pytesseract ,re
+import pytesseract ,re
 from PIL import Image 
 import csv
-#import pandas as pd
+import pandas as pd
+from firebase_admin import auth
 # Create your views here.
 
 User = get_user_model()
@@ -92,7 +95,7 @@ def user_registration(request):
 		grad=request.POST.get('graduation')
 		branch=request.POST.get('branch')
 		company=request.POST.get('company')
-		idproof=request.POST.get('idproof')
+		idproof = request.POST.get('idproof')
 		lurl=request.POST.get('linkedinurl')
 		pw1=request.POST.get('password1')
 		pw2=request.POST.get('password2')
@@ -121,10 +124,10 @@ def user_registration(request):
 		#reg=fs.collection(u'superadmin').document(u'registration').collection(u'member')
 	
 		authe.create_user_with_email_and_password(email, pw1)
-		reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
-		reg.document(u'{}'.format(email)).set({
-			'password':pw1
-		})
+		# reg = fs.collection(u'member').document(u'LoginID').collection(u'UniqueID')
+		# reg.document(u'{}'.format(email)).set({
+		# 	'password':pw1
+		# })
 	
 		data = fs.collection(u'member').document(u'profiles').collection(u'data')
 		data.document(u'{}'.format(email)).set({
@@ -136,35 +139,73 @@ def user_registration(request):
 			'graduation':grad,
 			'branch':branch,
 			'company':company,
-			'idProof':idproof,
+			'idProof':fileurl,
 			'linkedinUrl':lurl,
 			'username': fname + lname,
 			'userType': 'member',
 		})
 		
 		#Code to check the data from IDproof
-		'''
+	
 		images=cv2.imread(idproof) 
 		gray=cv2.cvtColor(images, cv2.COLOR_BGR2GRAY) 
 		#memory usage with image i.e. adding image to memory 
-		#filename = "{}.jpg".format(os.getpid()) 
-		#cv2.imwrite(filename, gray) 
+		#filename1 = "{}.jpg".format(os.getpid()) 
+		#cv2.imwrite(filename1, gray) 
 		text = pytesseract.image_to_string(gray)
-		f= open("out.txt","w+")
-		f.write(text)
-		f.close()
+		f1= open("out.txt","w+")
+		f1.write(text)
+		f1.close()
 		name_list = []
 
-		with open ('out.txt', 'rt') as myfile:
-			for myline in myfile:
-				name_list.append(myline)
-		for item in name_list:
-			if name == item :
-				print('Found on ID proof!')
-	'''
+		# with open ('out.txt', 'rt') as myfile:
+		# 	for myline in myfile:
+		# 		name_list.append(myline)
+		# for item in name_list:
+		# 	if name == item :
+		# 		print('Found on ID proof!')
+	
 	return render(request, "registration/login.html")
 
+def resetPasswordredirect(request):
+	
+	return render(request, "resetPassword.html")
 
+
+def resetPassword(request):
+	if request.method == 'POST':
+		emailID = request.POST.get('email')
+	# send_mail(
+    #     'No-reply: Reset Passsword link',
+    #     'Click on the below link to reset your password and login again',
+    #     'wbcommunityapp@gmail.com',
+    #     [emailID],
+    #     fail_silently=False,
+    # )
+	# port = 587  # For starttls
+	# smtp_server = "smtp.gmail.com"
+	# sender_email = "wbcommunityapp@gmail.com"
+	# receiver_email = emailID
+	# password = 'mmcoe2021@BEProject'
+	
+	# Subject = "Password Reset Link"
+	# Text = "Click on the link below to reset your password.\n http://127.0.0.1:8000/setPasswordredirect"
+	# message = 'Subject: {}\n\n{}'.format(Subject, Text)
+
+	# context = ssl.create_default_context()
+	# with smtplib.SMTP(smtp_server, port) as server:
+	# 	server.ehlo()
+	# 	server.starttls(context=context)
+	# 	server.ehlo()
+	# 	server.login(sender_email, password)
+	# 	server.sendmail(sender_email, receiver_email, message)
+	# 	server.quit()
+	
+		authe.send_password_reset_email(emailID)
+		msg = "Reset Password link sent to you email address."
+
+	return render(request, "registration/login.html",{"messg":msg})
+	
 def ProfileRedirect(request):
 	
 	res = get_user_data()

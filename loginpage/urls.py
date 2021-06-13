@@ -11,4 +11,7 @@ urlpatterns = [
     url(r'^profile/', views.ProfileRedirect, name='Profile'),
     #path('profile', views.ProfileRedirect, name='Profile'),
     url(r'^Dashboard/', views.DashboardView, name='Dashboard'),
+    url(r'^resetPasswordredirect/', views.resetPasswordredirect, name='resetPasswordredirect'),
+    url(r'^resetPassword/', views.resetPassword, name='resetPassword'),
+
 ]

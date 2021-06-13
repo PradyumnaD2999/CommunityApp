@@ -95,6 +95,13 @@ DATABASES = {
     }
 }
 
+# EMAIL_HOST = 'smtp.mailtrap.io'
+# EMAIL_HOST_USER = 'wbcommunityapp@gmail.com'
+# EMAIL_HOST_PASSWORD = 'mmcoe2021@BEProject'
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
