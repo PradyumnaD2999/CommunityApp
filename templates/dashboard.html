@@ -113,11 +113,10 @@
 
                     <div class="card-body">
                        {{ post.description }}
-                       {% if post.imgpostUrl is not empty %}
-                        <div>
-                            <img class="masthead-avatar mb-5" src="{{ post.imgpostUrl }}" width="300" height="300"/>
-                        </div>
-                       {% endif %}
+                       {% ifnotequal post.imgpostUrl "" %}
+                       <div><img class="masthead-avatar mb-5" src="{{ post.imgpostUrl }}" width="300" height="300"/>
+                       </div>
+                   {% endifnotequal %}
                     </div>
                     {% comment %} <div class="card-footer">
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
