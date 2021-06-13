@@ -10,8 +10,6 @@ import datetime
 from django.core.files.storage import FileSystemStorage
 import os
 
-
-
 config = {
 	'apiKey': "AIzaSyD-THXuPuvdtXFMBvy1-PJo-ueMWu0SJ-E",
 	'authDomain': "wbca-mmcoe2021.firebaseapp.com",
@@ -21,13 +19,12 @@ config = {
   	'messagingSenderId': "210306099976",
   	'appId': "1:210306099976:web:c35649974e76992848dabd",
   	'measurementId': "G-RC62WM6F3N"
-
 }
+
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
 
 fs = firestore.client()
-# Create your views here.
 
 def randomID():
     S = 10  # number of characters in the string.  
@@ -35,9 +32,7 @@ def randomID():
     print("The randomly generated string is : " + str(ran)) 
     return str(ran)
 
-
 def groupsView(request):
-
     return render(request, "groups.html")
 
 
@@ -48,9 +43,11 @@ def createPost(request):
         # postData = post_data.document(u'M1D5JOI0ZN').get().to_dict()
         postData = post_data.where(u'date', u'==', dateTime).limit(1).stream()
         postData1 = None
+
         for pd in postData:
             postData1 = pd.to_dict()
             pd.reference.delete()
+
         postID = randomID()
         postDataUser = fs.collection(u'member').document(u'posts').collection(u'feed')
         postDataUser.document(u'{}'.format(postID)).set({
@@ -65,37 +62,10 @@ def createPost(request):
     return render(request, "dashboard.html", res)
 
 def submitPost(request):
-
     res = fetchPost()
     if request.method == "POST":
-
-        desc = request.POST.get('desc')
-        owner = res['firstName'] + res['lastName']
-        postID = randomID()
-        post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
-        post_data.document(u'{}'.format(postID)).set({
-            'description': desc,
-            'owner': owner,
-            'date': datetime.datetime.now().strftime("%b %d, %Y at %H:%M:%S #%f"),
-            'default': False,
-            'timestamp': datetime.datetime.now().strftime("%Y%m%d%H%M%S%f"),
-        })
-
-        
-        # post_data.document(u'M1D5JOI0ZN').update({
-        #     'description': desc,
-        #     'owner': owner,
-        #     'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        # })
-
-    return render(request, "dashboard.html", res)
-
-def submitimagePost(request):
-    res = fetchPost()
-    if request.method == "POST":
-
         postimg = request.FILES['postimg'] if 'postimg' in request.FILES else None
-        postdesc = request.POST.get('postdesc')
+        desc = request.POST.get('desc')
 
         fname = postimg.name
         print(fname)
@@ -108,12 +78,17 @@ def submitimagePost(request):
         post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
         post_data.document(u'{}'.format(postID)).set({
             'owner': owner,
-            'description' : postdesc,
+            'description' : desc,
             'date': datetime.datetime.now().strftime("%b %d, %Y at %H:%M:%S #%f"),
             'default': False,
             'timestamp': datetime.datetime.now().strftime("%Y%m%d%H%M%S%f"),
             'imgpostUrl' : fileurl,
         })
-        
+
+        # post_data.document(u'M1D5JOI0ZN').update({
+        #     'description': desc,
+        #     'owner': owner,
+        #     'date': datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        # })
 
     return render(request, "dashboard.html", res)

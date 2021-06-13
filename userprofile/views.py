@@ -13,8 +13,6 @@ from django.http import HttpResponseRedirect
 import os
 from django.core.files.storage import FileSystemStorage
 
-
-
 config = {
 	'apiKey': "AIzaSyD-THXuPuvdtXFMBvy1-PJo-ueMWu0SJ-E",
 	'authDomain': "wbca-mmcoe2021.firebaseapp.com",
@@ -24,14 +22,12 @@ config = {
   	'messagingSenderId': "210306099976",
   	'appId': "1:210306099976:web:c35649974e76992848dabd",
   	'measurementId': "G-RC62WM6F3N"
-
 }
+
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
 
 fs = firestore.client()
-
-# Create your views here.
 
 def editProfile(request):
     res = get_user_data()
@@ -66,26 +62,24 @@ def changeProfilePicture(request):
         print(fname)
         f = FileSystemStorage()
         file = f.save(fname, profilePic)
-            # the fileurl variable now contains the url to the file. This can be used to serve the file when needed.
+
+        # the fileurl variable now contains the url to the file. This can be used to serve the file when needed.
         fileurl = f.url(file)
-        
-        
+
         #return HttpResponseRedirect('/success/url/')
         
         input = fs.collection(u'member').document(u'profiles').collection(u'data')
         input.document(u'{}'.format(res['email'])).update({
             'profilePicurl': fileurl,
-            })
+        })
+
         res = get_user_data()
         print(res['profilePicurl'])
 
     return render(request, "profile.html", res)
 
- 
-
 def searchUserview(request):
     res = get_user_data()
-    
     return render(request, "search.html",res)
 
 def searchUser(request):
@@ -95,6 +89,5 @@ def searchUser(request):
 
         res['str'] = search_Str
         input = fs.collection(u'member').document(u'profiles').collection(u'data')
-    
 
     return render(request, "search.html",res)

@@ -2,10 +2,15 @@
 {% load static %}
 
 {% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     {% ifequal userType "member" %}
     <nav class="navbar navbar-light bg-white">
         <a href="#" class="navbar-brand">Alumni Community</a>
-        <form class="form-inline">
+        {% comment %} <form class="form-inline">
             <div class="input-group">
                 <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
                 <div class="input-group-append">
@@ -14,7 +19,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> {% endcomment %}
     </nav>
 
     <div class="container-fluid gedf-wrapper">
@@ -30,29 +35,21 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div class="h6 text-muted">Members</div>
-                            <div class="h5">7</div>
+                            <div class="h5">{{ memberCount }}</div>
                         </li>
-                        <!-- <li class="list-group-item">
-                            <div class="h6 text-muted">Following</div>
-                            <div class="h5">6758</div>
-                        </li> -->
-                        {% comment %} <li class="list-group-item">Vestibulum at eros</li> {% endcomment %}
                     </ul>
                 </div>
             </div>
             <div class="col-md-6 gedf-main">
 
                 <!--- \\\\\\\Post-->
-                <form action="/submitPost/" method="post">
+                <form action="/submitPost/" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="card gedf-card">
                         <div class="card-header">
                             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Write a Post</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
                                 </li>
                             </ul>
                         </div>
@@ -62,22 +59,8 @@
                                     <div class="form-group">
                                         <label class="sr-only" for="message">post</label>
                                         <textarea class="form-control" id="Description" name="desc" rows="3" placeholder="What are you thinking?"></textarea>
-                                    </div>
-                                </form>                    
-                                </div>
-                                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                                    <div class="form-group">
-                                        <form action="/submitimagePost/" method="post" enctype="multipart/form-data">
-                                            {% csrf_token %}
-                                            <div class="row justify-content-center">
-                                                <input id="upload" type="file" name="postimg"/>
-                                                <button type="submit" class="btn" style="background-color: #000; color: #fff;">Upload</button>
-                                                <textarea class="form-control" id="Description" name="postdesc" rows="3" placeholder="What are you thinking?"></textarea>
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="py-4"></div>
+                                        <input id="upload" type="file" name="postimg"/>
+                                    </div>                   
                                 </div>
                             </div>
                             <div class="btn-toolbar justify-content-between">
@@ -91,16 +74,11 @@
                                         aria-expanded="false">
                                         <i class="fa fa-globe"></i>
                                     </button>
-                                    <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                                        <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                <!-- </form> -->
+                </form>
                 <!-- Post /////-->
 
                  <!--- \\\\\\\Post-->
@@ -115,9 +93,6 @@
                                 <div class="ml-2">
                                     <div class="h5 m-0">{{ post.owner }}</div>
                                     <div class="text-muted h7 mb-2">{{ post.date }}</div>
-                                    {% if post.imgpostUrl is not empty %}<div><img class="masthead-avatar mb-5" src="{{ post.imgpostUrl }}" width="300" height="300"/>
-                                    </div>{% endif %}
-                                    {% comment %} <div class="h7 text-muted">Miracles Lee Cross</div> {% endcomment %}
                                 </div>
                             </div>
                             <div>
@@ -134,17 +109,21 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="card-body">
                        {{ post.description }}
+                       {% if post.imgpostUrl is not empty %}
+                        <div>
+                            <img class="masthead-avatar mb-5" src="{{ post.imgpostUrl }}" width="300" height="300"/>
+                        </div>
+                       {% endif %}
                     </div>
-                    <div class="card-footer">
+                    {% comment %} <div class="card-footer">
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                         <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
                 {% endfor %%}
                 <!-- Post /////-->
@@ -153,22 +132,12 @@
             <div class="col-md-3">
                 <div class="card gedf-card">
                     <div class="card-body">
-                        {% comment %} <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a> {% endcomment %}
+                        Sponsored Content
                     </div>
                 </div>
                 <div class="card gedf-card">
                         <div class="card-body">
-                            {% comment %} <h5 class="card-title">Card title</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                card's content.</p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a> {% endcomment %}
+                            Sponsored Ads
                         </div>
                     </div>
             </div>
@@ -179,7 +148,7 @@
     {% ifequal userType "admin" %}
     <nav class="navbar navbar-light bg-white">
         <a href="#" class="navbar-brand">Alumni Community</a>
-        <form class="form-inline">
+        {% comment %} <form class="form-inline">
             <div class="input-group">
                 <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
                 <div class="input-group-append">
@@ -188,7 +157,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> {% endcomment %}
     </nav>
 
     <div class="container-fluid gedf-wrapper">
@@ -204,13 +173,8 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div class="h6 text-muted">Members</div>
-                            <div class="h5">7</div>
+                            <div class="h5">{{ memberCount }}</div>
                         </li>
-                        <!-- <li class="list-group-item">
-                            <div class="h6 text-muted">Following</div>
-                            <div class="h5"></div>
-                        </li> -->
-                        {% comment %} <li class="list-group-item">Vestibulum at eros</li> {% endcomment %}
                     </ul>
                 </div>
             </div>
@@ -229,41 +193,30 @@
                                     <div class="ml-2">
                                         <div class="h5 m-0">{{ post.owner }}</div>
                                         <div class="text-muted h7 mb-2">{{ post.date }}</div>
-                                        {% if post.imgpostUrl is not empty %}<div><img class="masthead-avatar mb-5" src="{{ post.imgpostUrl }}" width="300" height="300"/>
-                                        </div>{% endif %}
                                         <input type="hidden" name="datetime" value="{{ post.date }}">
-                                        {% comment %} <div class="h7 text-muted">Miracles Lee Cross</div> {% endcomment %}
                                     </div>
                                 </div>
                                 <div>
-                                    
-                                        <button class="btn" type="submit" style="background-color: black; color: #fff;">
-                                            Post
-                                        </button>
+                                    <button class="btn" type="submit" style="background-color: black; color: #fff;">
+                                        Post
+                                    </button>
                                         
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="card-body">
                         {{ post.description }}
-
-                            {% comment %} <a class="card-link" href="#">
-                                <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                            </a>
-
-                            <p class="card-text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                                sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
-                            </p> {% endcomment %}
-                            
+                        {% if post.imgpostUrl is not empty %}
+                            <div><img class="masthead-avatar mb-5" src="{{ post.imgpostUrl }}" width="300" height="300"/>
+                            </div>
+                        {% endif %}
                         </div>
-                        <div class="card-footer">
+                        {% comment %} <div class="card-footer">
                             <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
                             <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
                             <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </form>
                 {% endfor %}
@@ -273,22 +226,12 @@
             <div class="col-md-3">
                 <div class="card gedf-card">
                     <div class="card-body">
-                        {% comment %} <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a> {% endcomment %}
+                        Sponsored Content
                     </div>
                 </div>
                 <div class="card gedf-card">
                         <div class="card-body">
-                            {% comment %} <h5 class="card-title">Card title</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                card's content.</p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a> {% endcomment %}
+                            Sponsored Ads
                         </div>
                     </div>
             </div>

@@ -1,9 +1,11 @@
 {% load static %}
+
 {% if messg %}
 	<script>
 		alert('{{ messg }}')
 	</script>
 {% endif %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +16,7 @@
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
+
 <body>
   <main>
     <div class="sidenav">
@@ -36,15 +39,15 @@
 					      <select class = "form-control" name="usertype" id = "user_type">
 						      <option value = "member">Member</option>
 						      <option value = "admin">Admin</option>
-						      <option value = "superadmin">Super Admin</option>
+						      {% comment %} <option value = "superadmin">Super Admin</option> {% endcomment %}
 					      </select><br>
                      <label style= "padding-right: 30px">Email:</label>
     				      <input class = "form-control" type="email" name="email" required><br>
                      <label>Password:</label>
     				      <input class = "form-control" type="password" name="pass" required><br>
-                      <a href={% url 'resetPasswordredirect' %}>Forgot Password</a>
                   </div>
                   <button type="submit" class="btn btn-black">Login</button>
+                  <a href={% url 'resetPasswordredirect' %} style="padding-left: 260px">Forgot Password?</a>
                </form>
             </div>
          </div>

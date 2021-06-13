@@ -11,17 +11,13 @@ from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 import smtplib, ssl
 from django.core.files.storage import FileSystemStorage
-import cv2 
-import os,argparse 
-import pytesseract ,re
-from PIL import Image 
-import csv
-import pandas as pd
+import os,argparse
 from firebase_admin import auth
-# Create your views here.
-
-User = get_user_model()
-
+# import cv2 
+# import pytesseract ,re
+# from PIL import Image 
+# import csv
+# import pandas as pd
 
 class LoginPageView(TemplateView):
 	template_name = 'registration/login.html'
@@ -35,8 +31,8 @@ config = {
   	'messagingSenderId': "210306099976",
   	'appId': "1:210306099976:web:c35649974e76992848dabd",
   	'measurementId': "G-RC62WM6F3N"
-
 }
+
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
 
@@ -45,38 +41,29 @@ cred = credentials.Certificate(os.path.join(cwd, 'wbca-mmcoe2021-firebase-admins
 firebase_admin.initialize_app(cred, {'databaseURL': "https://wbca-mmcoe2021-default-rtdb.firebaseio.com"})
 fs = firestore.client()
 
-
-# Create your views here
-
 global res
 res = {}
+
 def loginAuth(request):
 	if request.method == "POST":
-
 		email=request.POST.get('email')
 		passw = request.POST.get("pass")
 		userType = request.POST.get("usertype")
 		print(userType)
-		if not fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
-			msg = "Please enter valid credentials"
+
+		if not fs.collection(u'member').document(u'profiles').collection(u'data').document(u'{}'.format(email)).get().exists:
+			msg = "Please Enter Valid Credentials"
 			return render(request,"registration/login.html",{"messg":msg})
+		elif fs.collection(u'member').document(u'profiles').collection(u'data').document(u'{}'.format(email)).get().to_dict()['userType'] != userType:
+			msg = "User Type Not Valid"
+			return render(request,"registration/login.html",{"messg":msg})
+
 		try:
 			user = authe.sign_in_with_email_and_password(email,passw)
 		except:
-			message="invalid credentials"
+			message="Invalid Credentials"
 			return render(request,"registration/login.html",{"messg":message})
-		
-		session_id=user['idToken']
-		request.session['uid']=str(session_id)
-		idtoken=request.session.get('uid',None)
-		
 
-		currentuser = authe.current_user
-
-		email = currentuser['email']
-		print(currentuser['email'])
-		
-	
 	res = fetchPost()
 	return render(request, "dashboard.html",res)
 
@@ -86,7 +73,6 @@ def registrationRedirect(request):
 
 def user_registration(request):
 	if request.method == "POST":
-
 		email=request.POST.get('email')
 		fname=request.POST.get('firstname')
 		mname=request.POST.get('middlename')
@@ -101,17 +87,6 @@ def user_registration(request):
 		pw2=request.POST.get('password2')
 
 		name = fname+' '+lname 
-		#print(name)
-		colunms = ['username','password','firstname','lastname','email','institution','department']
-
-		#path = "/home/neha/Downloads/BEMOODLE.csv"
-		#df = pd.read_csv(path, names=colunms)
-		#print(df.head())
-
-		# for i in df['lastname']:
-		# 	if i == name:
-		# 		print('found')
-
 
 		if fs.collection(u'member').document(u'LoginID').collection(u'UniqueID').document(u'{}'.format(email)).get().exists:
 			msg = "This e-mail is already associated with another account!"
@@ -147,18 +122,19 @@ def user_registration(request):
 		subject = "Registration Successful!"
 		text = "Thank You For registering to WB Community."
 		sendemail(email,subject,text)
+
 		#Code to check the data from IDproof
 	
-		images=cv2.imread(idproof) 
-		gray=cv2.cvtColor(images, cv2.COLOR_BGR2GRAY) 
-		#memory usage with image i.e. adding image to memory 
-		#filename1 = "{}.jpg".format(os.getpid()) 
-		#cv2.imwrite(filename1, gray) 
-		text = pytesseract.image_to_string(gray)
-		f1= open("out.txt","w+")
-		f1.write(text)
-		f1.close()
-		name_list = []
+		# images=cv2.imread(idproof) 
+		# gray=cv2.cvtColor(images, cv2.COLOR_BGR2GRAY) 
+		# #memory usage with image i.e. adding image to memory 
+		# #filename1 = "{}.jpg".format(os.getpid()) 
+		# #cv2.imwrite(filename1, gray) 
+		# text = pytesseract.image_to_string(gray)
+		# f1= open("out.txt","w+")
+		# f1.write(text)
+		# f1.close()
+		# name_list = []
 
 		# with open ('out.txt', 'rt') as myfile:
 		# 	for myline in myfile:
@@ -179,46 +155,46 @@ def sendemail(emailID,subject,text):
 	context = ssl.create_default_context()
 	with smtplib.SMTP(smtp_server, port) as server:
 		server.ehlo()
-	server.starttls(context=context)
-	server.ehlo()
-	server.login(sender_email, password)
-	server.sendmail(sender_email, receiver_email, message)
-	server.quit()
+		server.starttls(context=context)
+		server.ehlo()
+		server.login(sender_email, password)
+		server.sendmail(sender_email, receiver_email, message)
+		server.quit()
 	
 
 def resetPasswordredirect(request):
-	
 	return render(request, "resetPassword.html")
 
 
 def resetPassword(request):
 	if request.method == 'POST':
 		emailID = request.POST.get('email')
-	# send_mail(
-    #     'No-reply: Reset Passsword link',
-    #     'Click on the below link to reset your password and login again',
-    #     'wbcommunityapp@gmail.com',
-    #     [emailID],
-    #     fail_silently=False,
-    # )
-	# port = 587  # For starttls
-	# smtp_server = "smtp.gmail.com"
-	# sender_email = "wbcommunityapp@gmail.com"
-	# receiver_email = emailID
-	# password = 'mmcoe2021@BEProject'
-	
-	# Subject = "Password Reset Link"
-	# Text = "Click on the link below to reset your password.\n http://127.0.0.1:8000/setPasswordredirect"
-	# message = 'Subject: {}\n\n{}'.format(Subject, Text)
 
-	# context = ssl.create_default_context()
-	# with smtplib.SMTP(smtp_server, port) as server:
-	# 	server.ehlo()
-	# 	server.starttls(context=context)
-	# 	server.ehlo()
-	# 	server.login(sender_email, password)
-	# 	server.sendmail(sender_email, receiver_email, message)
-	# 	server.quit()
+		# send_mail(
+		#     'No-reply: Reset Passsword link',
+		#     'Click on the below link to reset your password and login again',
+		#     'wbcommunityapp@gmail.com',
+		#     [emailID],
+		#     fail_silently=False,
+		# )
+		# port = 587  # For starttls
+		# smtp_server = "smtp.gmail.com"
+		# sender_email = "wbcommunityapp@gmail.com"
+		# receiver_email = emailID
+		# password = 'mmcoe2021@BEProject'
+		
+		# Subject = "Password Reset Link"
+		# Text = "Click on the link below to reset your password.\n http://127.0.0.1:8000/setPasswordredirect"
+		# message = 'Subject: {}\n\n{}'.format(Subject, Text)
+
+		# context = ssl.create_default_context()
+		# with smtplib.SMTP(smtp_server, port) as server:
+		# 	server.ehlo()
+		# 	server.starttls(context=context)
+		# 	server.ehlo()
+		# 	server.login(sender_email, password)
+		# 	server.sendmail(sender_email, receiver_email, message)
+		# 	server.quit()
 	
 		authe.send_password_reset_email(emailID)
 		msg = "Reset Password link sent to you email address."
@@ -226,7 +202,6 @@ def resetPassword(request):
 	return render(request, "registration/login.html",{"messg":msg})
 	
 def ProfileRedirect(request):
-	
 	res = get_user_data()
 	return render(request, "profile.html",res)
 
@@ -242,6 +217,13 @@ def get_user_data():
 def fetchPost():
 	res = get_user_data()
 	posts = []
+	
+	memberCount = 0
+	member_data = fs.collection(u'member').document(u'profiles').collection(u'data')
+	members = member_data.where(u'userType', u'==', 'member').stream()
+	for m in members:
+		memberCount = memberCount + 1
+ 
 	if res['userType'] == 'admin':
 		post_data = fs.collection(u'member').document(u'posts').collection(u'pending')
 		postData = post_data.where(u'default', u'==', False).order_by(u'timestamp', direction=firestore.Query.DESCENDING).stream()
@@ -255,11 +237,10 @@ def fetchPost():
 			posts.append(pd.to_dict())
 
 	res['posts'] = posts
+	res['memberCount'] = memberCount
 	#print(res)
 	return res
 
-def DashboardView(request):
-	
+def DashboardView(request):	
 	res = fetchPost()
 	return render(request, "dashboard.html", res)
-
