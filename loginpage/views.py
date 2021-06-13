@@ -139,12 +139,14 @@ def user_registration(request):
 			'graduation':grad,
 			'branch':branch,
 			'company':company,
-			'idProof':fileurl,
+			'idProof':idproof,
 			'linkedinUrl':lurl,
 			'username': fname + lname,
 			'userType': 'member',
 		})
-		
+		subject = "Registration Successful!"
+		text = "Thank You For registering to WB Community."
+		sendemail(email,subject,text)
 		#Code to check the data from IDproof
 	
 		images=cv2.imread(idproof) 
@@ -166,6 +168,23 @@ def user_registration(request):
 		# 		print('Found on ID proof!')
 	
 	return render(request, "registration/login.html")
+
+def sendemail(emailID,subject,text):
+	port = 587  # For starttls
+	smtp_server = "smtp.gmail.com"
+	sender_email = "wbcommunityapp@gmail.com"
+	receiver_email = emailID
+	password = 'mmcoe2021@BEProject'
+	message = 'Subject: {}\n\n{}'.format(subject, text)
+	context = ssl.create_default_context()
+	with smtplib.SMTP(smtp_server, port) as server:
+		server.ehlo()
+	server.starttls(context=context)
+	server.ehlo()
+	server.login(sender_email, password)
+	server.sendmail(sender_email, receiver_email, message)
+	server.quit()
+	
 
 def resetPasswordredirect(request):
 	
